@@ -21,13 +21,18 @@ public class PlayerController : MonoBehaviour //need to impliment the beat syste
     // Update is called once per frame
     void Update()
     {
+        Move();
+    }
+
+    private void Move()
+    {
         transform.position = Vector3.MoveTowards(transform.position, movePoint.position, moveSpeed * Time.deltaTime);
 
-        if(Vector3.Distance(transform.position, movePoint.position) <= 0.05f) //0.05 can be down to 0, TODO: add condition of on the beat when implimented
+        if (Vector3.Distance(transform.position, movePoint.position) <= 0.05f) //0.05 can be down to 0, TODO: add condition of on the beat when implimented
         {
             if (Mathf.Abs(Input.GetAxisRaw("Horizontal")) == 1f) //is horizontal input being pressed
             {
-                if(!Physics.CheckSphere(movePoint.position + new Vector3(Input.GetAxisRaw("Horizontal") * moveDistanceMult, 0f, 0f), 0.2f, collision))
+                if (!Physics.CheckSphere(movePoint.position + new Vector3(Input.GetAxisRaw("Horizontal") * moveDistanceMult, 0f, 0f), 0.2f, collision))
                     movePoint.position += new Vector3(Input.GetAxisRaw("Horizontal") * moveDistanceMult, 0f, 0f); //(x, y, z), working with x and y
             }
             else if (Mathf.Abs(Input.GetAxisRaw("Vertical")) == 1f) //is horizontal input being pressed //change to seperate if to allow diagonal movement
