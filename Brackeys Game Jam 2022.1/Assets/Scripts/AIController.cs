@@ -50,6 +50,7 @@ public class AIController : MonoBehaviour
                 else if (myX > playerX)
                     movePoint.position += new Vector3(-moveDistanceMult, 0f, 0f); //(x, y, z), working with x and y
             }
+            /*
             else if (Mathf.Abs(myX - playerX) > Mathf.Abs(myY - playerY)) //if y dis is higher, move closer in y 
             {
                 Debug.Log("Y dist lower");
@@ -58,6 +59,7 @@ public class AIController : MonoBehaviour
                 else if (myY > playerY)
                     movePoint.position += new Vector3(0f, -moveDistanceMult, 0f); //(x, y, z), working with x and y
             }
+            */
         }
     }
 }

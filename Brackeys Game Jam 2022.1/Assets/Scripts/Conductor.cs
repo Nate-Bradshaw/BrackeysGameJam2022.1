@@ -17,7 +17,7 @@ public class Conductor : MonoBehaviour
     [SerializeField] private float songPosition;
 
     //Current song position, in beats
-    [SerializeField] private float songPositionInBeats;
+    public float songPositionInBeats;
 
     //How many seconds have passed since the song started
     [SerializeField] private float dspSongTime;
