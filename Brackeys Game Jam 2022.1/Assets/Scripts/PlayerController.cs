@@ -39,17 +39,17 @@ public class PlayerController : MonoBehaviour //need to impliment the beat syste
     void Update()
     {
         beatFloat = Conductor.instance.songBeatsPosBase;
-        beatIntL = Mathf.Ceil(Conductor.instance.songBeatsPosBase) - 1.5f; //truncated
-        beatIntH = Mathf.Ceil(Conductor.instance.songBeatsPosBase) - 0.5f;
+        beatIntL = Mathf.Ceil(Conductor.instance.songBeatsPosBase) - 1f + 0.5f; //truncated
+        beatIntH = Mathf.Ceil(Conductor.instance.songBeatsPosBase) + 0.5f;
 
         if (FastApproximately(beatIntL, beatFloat, 0.3f) || FastApproximately(beatIntH, beatFloat, 0.1f)) //second one needs to be 1/3 of the first for reasons
         {
             Move();
-            test.SetActive(true); //debug
+            //test.SetActive(true); //debug
         }
         else
         {
-            test.SetActive(false); //debug
+            //test.SetActive(false); //debug
         }
 
         transform.position = Vector3.MoveTowards(transform.position, movePoint.position, moveSpeed * Time.deltaTime);
@@ -63,12 +63,12 @@ public class PlayerController : MonoBehaviour //need to impliment the beat syste
 
         if (Vector3.Distance(transform.position, movePoint.position) <= 0.05f) //0.05 can be down to 0, TODO: add condition of on the beat when implimented
         {
-            if (Mathf.Abs(Input.GetAxisRaw("Horizontal")) == 1f) //is horizontal input being pressed TODO: Change to get input down so it can not just be held
+            if (Input.GetKeyDown("a") || Input.GetKeyDown("d")) //is horizontal input being pressed TODO: Change to get input down so it can not just be held
             {
                 if (!Physics.CheckSphere(movePoint.position + new Vector3(Input.GetAxisRaw("Horizontal") * moveDistanceMult, 0f, 0f), 0.2f, collision))
                     movePoint.position += new Vector3(Input.GetAxisRaw("Horizontal") * moveDistanceMult, 0f, 0f); //(x, y, z), working with x and y
             }
-            else if (Mathf.Abs(Input.GetAxisRaw("Vertical")) == 1f) //is horizontal input being pressed //change to seperate if to allow diagonal movement
+            else if (Input.GetKeyDown("w") || Input.GetKeyDown("s")) //is horizontal input being pressed //change to seperate if to allow diagonal movement
             {
                 if (!Physics.CheckSphere(movePoint.position + new Vector3(0f, Input.GetAxisRaw("Vertical") * moveDistanceMult, 0f), 0.2f, collision))
                     movePoint.position += new Vector3(0f, Input.GetAxisRaw("Vertical") * moveDistanceMult, 0f); //(x, y, z), working with x and y

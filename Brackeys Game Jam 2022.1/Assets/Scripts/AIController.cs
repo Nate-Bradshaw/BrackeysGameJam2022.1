@@ -57,11 +57,11 @@ public class AIController : MonoBehaviour
         if (FastApproximately(beatIntL, beatFloat, 0.1f) || FastApproximately(beatIntH, beatFloat, 0.03f)) //second one needs to be 1/3 of the first for reasons
         {
             Move();
-            test.SetActive(true); //debug
+            //test.SetActive(true); //debug
         }
         else
         {
-            test.SetActive(false); //debug
+            //test.SetActive(false); //debug
         }
 
         //Debug.Log(playerX + " " + playerY + " / " + myX + " " + myY);
