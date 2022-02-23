@@ -37,5 +37,6 @@ public class GameGrid : MonoBehaviour
                 gameGrid[x, y].gameObject.name = "Grid Space ( X: " + x.ToString() + " Y: " + y.ToString() + ")";
             }
         }
+        this.transform.position = new Vector3(-2.5f, -2.5f, 0); // for simplicty, could remove
     }
 }
