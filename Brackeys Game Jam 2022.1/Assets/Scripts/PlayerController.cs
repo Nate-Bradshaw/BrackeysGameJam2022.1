@@ -12,7 +12,6 @@ public class PlayerController : MonoBehaviour //need to impliment the beat syste
 
     [SerializeField] private LayerMask collision;
 
-    [SerializeField] private float beatAccuracy;
     [SerializeField] private float beatIntL;
     [SerializeField] private float beatIntH;
     [SerializeField] private float beatFloat;
@@ -34,18 +33,16 @@ public class PlayerController : MonoBehaviour //need to impliment the beat syste
     void Start()
     {
         movePoint.parent = null; //unparent movepoint at start so it can move seperatly
-
-        beatIntH = 1f;
     }
 
     // Update is called once per frame
     void Update()
     {
-        beatFloat = Conductor.instance.songPositionInBeats;
-        beatIntL = Mathf.Ceil(Conductor.instance.songPositionInBeats) - 1f; //truncated
-        beatIntH = Mathf.Ceil(Conductor.instance.songPositionInBeats);
+        beatFloat = Conductor.instance.songBeatsPosBase;
+        beatIntL = Mathf.Ceil(Conductor.instance.songBeatsPosBase) - 1.5f; //truncated
+        beatIntH = Mathf.Ceil(Conductor.instance.songBeatsPosBase) - 0.5f;
 
-        if (FastApproximately(beatIntL, beatFloat, 0.3f) || FastApproximately(beatIntH, beatFloat, 0.1f)) //second one needs to be 1/3 of the first for reasons //works with 30 bpm but breaks otherwise
+        if (FastApproximately(beatIntL, beatFloat, 0.3f) || FastApproximately(beatIntH, beatFloat, 0.1f)) //second one needs to be 1/3 of the first for reasons
         {
             Move();
             test.SetActive(true); //debug

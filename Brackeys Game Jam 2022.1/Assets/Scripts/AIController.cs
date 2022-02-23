@@ -11,11 +11,29 @@ public class AIController : MonoBehaviour
 
     [SerializeField] private LayerMask collision;
 
-    private float playerX;
-    private float playerY;
+    [SerializeField] private float playerX;
+    [SerializeField] private float playerY;
 
-    private float myX;
-    private float myY;
+    [SerializeField] private float myX;
+    [SerializeField] private float myY;
+
+    [SerializeField] private float beatIntL;
+    [SerializeField] private float beatIntH;
+    [SerializeField] private float beatFloat;
+
+    [SerializeField] private GameObject test;
+
+    public static bool FastApproximately(float a, float b, float threshold)
+    {
+        if (threshold > 0f)
+        {
+            return Mathf.Abs(a - b) <= threshold;
+        }
+        else
+        {
+            return Mathf.Approximately(a, b);
+        }
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -26,23 +44,36 @@ public class AIController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        playerX = player.transform.position.x; //make so only checks on / after beats so player is always on a tile
+        playerX = player.transform.position.x; //make so only checks on / after beats so player is always on a tile nah cba
         playerY = player.transform.position.y;
 
         myX = transform.position.x;
         myY = transform.position.y;
 
-        Move();
+        beatFloat = Conductor.instance.songBeatsPosHalf;
+        beatIntL = Mathf.Ceil(Conductor.instance.songBeatsPosHalf) - 1.5f; //truncated
+        beatIntH = Mathf.Ceil(Conductor.instance.songBeatsPosHalf) - 0.5f;
+
+        if (FastApproximately(beatIntL, beatFloat, 0.1f) || FastApproximately(beatIntH, beatFloat, 0.03f)) //second one needs to be 1/3 of the first for reasons
+        {
+            Move();
+            test.SetActive(true); //debug
+        }
+        else
+        {
+            test.SetActive(false); //debug
+        }
+
         //Debug.Log(playerX + " " + playerY + " / " + myX + " " + myY);
+
+        transform.position = Vector3.MoveTowards(transform.position, movePoint.position, moveSpeed * Time.deltaTime);
     }
 
     private void Move()
     {
-        transform.position = Vector3.MoveTowards(transform.position, movePoint.position, moveSpeed * Time.deltaTime);
-
-        if (Vector3.Distance(transform.position, movePoint.position) <= 0.05f) //0.05 can be down to 0, TODO: add condition of on the beat when implimented
+        if (Vector3.Distance(transform.position, movePoint.position) <= 0.05f) //0.05 can be down to 0
         {
-            if (Mathf.Abs(myX - playerX) <= Mathf.Abs(myY - playerY)) //if x dis is higher, move closer in x
+            if (Mathf.Abs(myX - playerX) >= Mathf.Abs(myY - playerY)) //if x dis is higher, move closer in x
             {
                 Debug.Log("X dist = or lower");
                 if (myX < playerX)
@@ -50,8 +81,8 @@ public class AIController : MonoBehaviour
                 else if (myX > playerX)
                     movePoint.position += new Vector3(-moveDistanceMult, 0f, 0f); //(x, y, z), working with x and y
             }
-            /*
-            else if (Mathf.Abs(myX - playerX) > Mathf.Abs(myY - playerY)) //if y dis is higher, move closer in y 
+
+            else if (Mathf.Abs(myX - playerX) < Mathf.Abs(myY - playerY)) //if y dis is higher, move closer in y 
             {
                 Debug.Log("Y dist lower");
                 if (myY < playerY)
@@ -59,7 +90,7 @@ public class AIController : MonoBehaviour
                 else if (myY > playerY)
                     movePoint.position += new Vector3(0f, -moveDistanceMult, 0f); //(x, y, z), working with x and y
             }
-            */
+
         }
     }
 }

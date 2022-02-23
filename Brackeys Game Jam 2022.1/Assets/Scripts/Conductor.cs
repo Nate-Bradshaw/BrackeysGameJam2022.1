@@ -11,13 +11,25 @@ public class Conductor : MonoBehaviour
     [SerializeField] private float songBpm;
 
     //The number of seconds for each song beat
-    [SerializeField] private float secPerBeat;
+    [SerializeField] private float secPerBeatDouble;
+
+    [SerializeField] private float secPerBeatBase;
+
+    [SerializeField] private float secPerBeatHalf;
+
+    [SerializeField] private float secPerBeatQuarter;
 
     //Current song position, in seconds
     [SerializeField] private float songPosition;
 
     //Current song position, in beats
-    public float songPositionInBeats;
+    public float songBeatsPosDouble;
+
+    public float songBeatsPosBase;
+
+    public float songBeatsPosHalf;
+
+    public float songBeatsPosQuarter;
 
     //How many seconds have passed since the song started
     [SerializeField] private float dspSongTime;
@@ -52,7 +64,13 @@ public class Conductor : MonoBehaviour
         musicSource = GetComponent<AudioSource>();
 
         //Calculate the number of seconds in each beat
-        secPerBeat = 60f / songBpm;
+        secPerBeatDouble = 60f / (songBpm * 2);
+
+        secPerBeatBase = 60f / songBpm;
+
+        secPerBeatHalf = 60f / (songBpm / 2);
+
+        secPerBeatQuarter = 60f / (songBpm / 4);
 
         //Record the time when the music starts
         dspSongTime = (float)AudioSettings.dspTime;
@@ -67,15 +85,36 @@ public class Conductor : MonoBehaviour
         //determine how many seconds since the song started
         songPosition = (float)(AudioSettings.dspTime - dspSongTime);
 
-        //determine how many beats since the song started
-        songPositionInBeats = songPosition / secPerBeat; //TODO: truncate this, also beats count from 1 and this counts from 0, so it will display 1 beat less
+        DoubleBPM();
+        BaseBPM();
+        HalfBPM();
+        QuarterBPM();
+    }
 
-        
-        if (songPositionInBeats >= (completedLoops + 1) * beatsPerLoop) // impliment when i include my own music
+    void DoubleBPM()
+    {
+        songBeatsPosDouble = songPosition / secPerBeatDouble;
+    }
+
+    void BaseBPM()
+    {
+        //determine how many beats since the song started
+        songBeatsPosBase = songPosition / secPerBeatBase; //TODO: truncate this, also beats count from 1 and this counts from 0, so it will display 1 beat less
+
+        if (songBeatsPosBase >= (completedLoops + 1) * beatsPerLoop) // define beatsPerLoop when i have my own music, rn 10min 120 bpm is not worth fixing
             completedLoops++;
-        loopPositionInBeats = songPositionInBeats - completedLoops * beatsPerLoop;
+        loopPositionInBeats = songBeatsPosBase - completedLoops * beatsPerLoop;
 
         loopPositionInAnalog = loopPositionInBeats / beatsPerLoop;
-        
+    }
+
+    void HalfBPM()
+    {
+        songBeatsPosHalf = songPosition / secPerBeatHalf;
+    }
+
+    void QuarterBPM()
+    {
+        songBeatsPosQuarter = songPosition / secPerBeatQuarter;
     }
 }
