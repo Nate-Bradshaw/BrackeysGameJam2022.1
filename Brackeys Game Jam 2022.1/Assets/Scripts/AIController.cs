@@ -12,10 +12,10 @@ public class AIController : MonoBehaviour
     [SerializeField] private LayerMask collision;
 
     [SerializeField] private float playerX;
-    [SerializeField] private float playerY;
+    [SerializeField] private float playerZ;
 
     [SerializeField] private float myX;
-    [SerializeField] private float myY;
+    [SerializeField] private float myZ;
 
     [SerializeField] private float beatIntL;
     [SerializeField] private float beatIntH;
@@ -45,10 +45,10 @@ public class AIController : MonoBehaviour
     void Update()
     {
         playerX = player.transform.position.x; //make so only checks on / after beats so player is always on a tile nah cba
-        playerY = player.transform.position.y;
+        playerZ = player.transform.position.z;
 
         myX = transform.position.x;
-        myY = transform.position.y;
+        myZ = transform.position.z;
 
         beatFloat = Conductor.instance.songBeatsPosHalf;
         beatIntL = Mathf.Ceil(Conductor.instance.songBeatsPosHalf) - 1.5f; //truncated
@@ -64,31 +64,39 @@ public class AIController : MonoBehaviour
             //test.SetActive(false); //debug
         }
 
-        //Debug.Log(playerX + " " + playerY + " / " + myX + " " + myY);
+        //Debug.Log(playerX + " " + playerZ + " / " + myX + " " + myZ);
 
         transform.position = Vector3.MoveTowards(transform.position, movePoint.position, moveSpeed * Time.deltaTime);
+    }
+
+    private void OnCollisionEnter(Collision collisionInfo)
+    {
+        if(collisionInfo.collider.tag == "Damage")
+        {
+            Destroy(gameObject, 0f); //add corpse and blood explosion?
+        }
     }
 
     private void Move()
     {
         if (Vector3.Distance(transform.position, movePoint.position) <= 0.05f) //0.05 can be down to 0
         {
-            if (Mathf.Abs(myX - playerX) >= Mathf.Abs(myY - playerY)) //if x dis is higher, move closer in x
+            if (Mathf.Abs(myX - playerX) >= Mathf.Abs(myZ - playerZ)) //if x dis is higher, move closer in x
             {
-                Debug.Log("X dist = or lower");
+                //Debug.Log("X dist = or lower");
                 if (myX < playerX)
                     movePoint.position += new Vector3(moveDistanceMult, 0f, 0f); //(x, y, z), working with x and y
                 else if (myX > playerX)
                     movePoint.position += new Vector3(-moveDistanceMult, 0f, 0f); //(x, y, z), working with x and y
             }
 
-            else if (Mathf.Abs(myX - playerX) < Mathf.Abs(myY - playerY)) //if y dis is higher, move closer in y 
+            else if (Mathf.Abs(myX - playerX) < Mathf.Abs(myZ - playerZ)) //if y dis is higher, move closer in y 
             {
-                Debug.Log("Y dist lower");
-                if (myY < playerY)
-                    movePoint.position += new Vector3(0f, moveDistanceMult, 0f); //(x, y, z), working with x and y
-                else if (myY > playerY)
-                    movePoint.position += new Vector3(0f, -moveDistanceMult, 0f); //(x, y, z), working with x and y
+                //Debug.Log("Z dist lower");
+                if (myZ < playerZ)
+                    movePoint.position += new Vector3(0f, 0f, moveDistanceMult); //(x, y, z), working with x and y
+                else if (myZ > playerZ)
+                    movePoint.position += new Vector3(0f, 0f, -moveDistanceMult); //(x, y, z), working with x and y
             }
 
         }

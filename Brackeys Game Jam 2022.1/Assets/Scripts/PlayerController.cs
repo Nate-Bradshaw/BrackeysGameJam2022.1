@@ -16,6 +16,10 @@ public class PlayerController : MonoBehaviour //need to impliment the beat syste
     [SerializeField] private float beatIntH;
     [SerializeField] private float beatFloat;
 
+    public static PlayerController instance;
+
+    public bool firing;
+
     public static bool FastApproximately(float a, float b, float threshold)
     {
         if (threshold > 0f)
@@ -30,6 +34,12 @@ public class PlayerController : MonoBehaviour //need to impliment the beat syste
 
     public GameObject test;
     // Start is called before the first frame update
+
+    void Awake()
+    {
+        instance = this;
+    }
+
     void Start()
     {
         movePoint.parent = null; //unparent movepoint at start so it can move seperatly
@@ -49,6 +59,7 @@ public class PlayerController : MonoBehaviour //need to impliment the beat syste
         }
         else
         {
+            firing = false;
             //test.SetActive(false); //debug
         }
 
@@ -56,22 +67,33 @@ public class PlayerController : MonoBehaviour //need to impliment the beat syste
         //if (Conductor.instance.songPositionInBeats)
         //Move();
     }
+    private void OnCollisionEnter(Collision collisionInfo)
+    {
+        if (collisionInfo.collider.tag == "Damage")
+        {
+            Destroy(gameObject, 0f); //add corpse and blood explosion?
+        }
+    }
 
     private void Move()
     {
         //transform.position = Vector3.MoveTowards(transform.position, movePoint.position, moveSpeed * Time.deltaTime);
 
-        if (Vector3.Distance(transform.position, movePoint.position) <= 0.05f) //0.05 can be down to 0, TODO: add condition of on the beat when implimented
+        if (Vector3.Distance(transform.position, movePoint.position) <= 0.05f) //0.05 can be down to 0,
         {
             if (Input.GetKeyDown("a") || Input.GetKeyDown("d")) //is horizontal input being pressed TODO: Change to get input down so it can not just be held
             {
                 if (!Physics.CheckSphere(movePoint.position + new Vector3(Input.GetAxisRaw("Horizontal") * moveDistanceMult, 0f, 0f), 0.2f, collision))
-                    movePoint.position += new Vector3(Input.GetAxisRaw("Horizontal") * moveDistanceMult, 0f, 0f); //(x, y, z), working with x and y
+                    movePoint.position += new Vector3(Input.GetAxisRaw("Horizontal") * moveDistanceMult, 0f, 0f); //(x, y, z), working with x and z
             }
             else if (Input.GetKeyDown("w") || Input.GetKeyDown("s")) //is horizontal input being pressed //change to seperate if to allow diagonal movement
             {
-                if (!Physics.CheckSphere(movePoint.position + new Vector3(0f, Input.GetAxisRaw("Vertical") * moveDistanceMult, 0f), 0.2f, collision))
-                    movePoint.position += new Vector3(0f, Input.GetAxisRaw("Vertical") * moveDistanceMult, 0f); //(x, y, z), working with x and y
+                if (!Physics.CheckSphere(movePoint.position + new Vector3(0f, 0f, Input.GetAxisRaw("Vertical") * moveDistanceMult), 0.2f, collision))
+                    movePoint.position += new Vector3(0f, 0f, Input.GetAxisRaw("Vertical") * moveDistanceMult); //(x, y, z), working with x and z
+            }
+            else if (Input.GetMouseButtonDown(0))
+            {
+                firing = true;
             }
         }
     }

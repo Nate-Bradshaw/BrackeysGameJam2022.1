@@ -17,6 +17,8 @@ public class GameGrid : MonoBehaviour
     void Start()
     {
         CreateGrid();
+        transform.Rotate(90f, 0f, 0f, Space.Self);
+        transform.position = new Vector3(-2.5f, 0f, -2.5f);
     }
 
     private void CreateGrid()
