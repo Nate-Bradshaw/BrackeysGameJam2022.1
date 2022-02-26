@@ -69,7 +69,7 @@ public class PlayerController : MonoBehaviour //need to impliment the beat syste
     }
     private void OnCollisionEnter(Collision collisionInfo)
     {
-        if (collisionInfo.collider.tag == "Damage")
+        if (collisionInfo.collider.tag == "Damage" || collisionInfo.collider.tag == "AIDamage")
         {
             Destroy(gameObject, 0f); //add corpse and blood explosion?
         }

@@ -54,6 +54,8 @@ public class Conductor : MonoBehaviour
 
     void Awake()
     {
+        //DontDestroyOnLoad(gameObject);
+
         instance = this;
     }
 

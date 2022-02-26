@@ -5,6 +5,8 @@ TagManager:
   serializedVersion: 2
   tags:
   - Damage
+  - AIDamage
+  - Collision
   layers:
   - Default
   - TransparentFX
@@ -15,7 +17,7 @@ TagManager:
   - Collision
   - Damage
   - Grid
-  - 
+  - AIColProbe
   - 
   - 
   - 

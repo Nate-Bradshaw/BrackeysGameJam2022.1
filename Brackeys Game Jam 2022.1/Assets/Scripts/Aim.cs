@@ -56,7 +56,7 @@ public class Aim : MonoBehaviour
 
         //shoot
 
-        if (Input.GetMouseButtonDown(0) && validGrid && canFire && !waiting) //move to player controller script to make sure it on beat and not at the same time as moving?
+        if (validGrid && canFire && !waiting) //move to player controller script to make sure it on beat and not at the same time as moving?
         {
             /*
             GameObject myLine = Instantiate(lineRender, transform);
