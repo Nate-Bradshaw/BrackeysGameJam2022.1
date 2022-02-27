@@ -6,9 +6,9 @@ public class GameGrid : MonoBehaviour
 {
     // https://www.youtube.com/watch?v=qkSSdqOAAl4 tutorial, currently at 7 mins
 
-    private int hieght = 10;
-    private int width = 10;
-    private float gridSpaceSize = 5f;
+    [SerializeField] private int hieght = 10;
+    [SerializeField] private int width = 10;
+    [SerializeField] private float gridSpaceSize = 5f;
 
     [SerializeField] private GameObject gridCellPrefab;
     private GameObject[,] gameGrid;

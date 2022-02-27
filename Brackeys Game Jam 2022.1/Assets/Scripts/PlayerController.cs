@@ -9,6 +9,7 @@ public class PlayerController : MonoBehaviour //need to impliment the beat syste
     [SerializeField] private float moveSpeed = 25f;
     [SerializeField] private float moveDistanceMult = 5f;
     [SerializeField] private Transform movePoint;
+    [SerializeField] private Transform spotLight;
 
     [SerializeField] private LayerMask collision;
 
@@ -42,6 +43,7 @@ public class PlayerController : MonoBehaviour //need to impliment the beat syste
 
     void Start()
     {
+        spotLight.parent = null;
         movePoint.parent = null; //unparent movepoint at start so it can move seperatly
     }
 

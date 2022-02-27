@@ -7,6 +7,8 @@ TagManager:
   - Damage
   - AIDamage
   - Collision
+  - AI
+  - OnlyOne
   layers:
   - Default
   - TransparentFX

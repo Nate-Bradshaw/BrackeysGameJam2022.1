@@ -33,6 +33,8 @@ public class AIController : MonoBehaviour
     [SerializeField] private bool rClear;
     [SerializeField] private bool lClear;
 
+    [SerializeField] private Transform spotLight;
+
     public static bool FastApproximately(float a, float b, float threshold)
     {
         if (threshold > 0f)
@@ -48,14 +50,19 @@ public class AIController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        player = GameObject.Find("Player");
+        spotLight.parent = null;
         movePoint.parent = null; //unparent movepoint at start so it can move seperatly
     }
 
     // Update is called once per frame
     void Update()
     {
-        playerX = player.transform.position.x; //make so only checks on / after beats so player is always on a tile nah cba
-        playerZ = player.transform.position.z;
+        if(GameObject.Find("Player") != null)
+        {
+            playerX = player.transform.position.x; //make so only checks on / after beats so player is always on a tile nah cba
+            playerZ = player.transform.position.z;
+        }
 
         myX = transform.position.x;
         myZ = transform.position.z;
@@ -64,7 +71,7 @@ public class AIController : MonoBehaviour
         beatIntL = Mathf.Ceil(Conductor.instance.songBeatsPosHalf) - 1.5f; //truncated
         beatIntH = Mathf.Ceil(Conductor.instance.songBeatsPosHalf) - 0.5f;
 
-        if (FastApproximately(beatIntL, beatFloat, 0.1f) || FastApproximately(beatIntH, beatFloat, 0.03f)) //second one needs to be 1/3 of the first for reasons
+        if (FastApproximately(beatIntL, beatFloat, 0.1f) && GameObject.Find("Player") != null || FastApproximately(beatIntH, beatFloat, 0.03f) && GameObject.Find("Player") != null) //second one needs to be 1/3 of the first for reasons
         {
             Move();
             //test.SetActive(true); //debug
@@ -89,7 +96,10 @@ public class AIController : MonoBehaviour
     {
         if (collisionInfo.collider.tag == "Damage")
         {
+            spotLight.parent = this.transform;
+            Destroy(spotLight.gameObject, 0f);
             Destroy(gameObject, 0f); //add corpse and blood explosion?
+            //keep pointer around for corpse generation
         }
     }
 
