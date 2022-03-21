@@ -27,13 +27,13 @@ public class NextScene : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        //bool doOnce = true;
+        
 
         if (GameObject.Find("Game Controller") != null)
         {
@@ -42,14 +42,13 @@ public class NextScene : MonoBehaviour
             difficultyStageT = GameController.instance.difficultyStage;
         }
 
-        if (GameObject.Find("Player") == null && SceneManager.GetActiveScene().buildIndex == 1) //&& doOnce
+        if (GameObject.Find("Player") == null && SceneManager.GetActiveScene().buildIndex == 1)
         {
-            //doOnce = false;
             SceneManager.LoadScene(2);
         }
 
 
-        if (GameObject.Find("Player") == null)
+        if (SceneManager.GetActiveScene().buildIndex == 2)
         {
             tracker = GameObject.Find("PostText").GetComponent<Text>();
             tracker.text = "ALIVE: " + aiActiveT + " DEAD: " + aiKilledT + " HEAT: " + difficultyStageT;
