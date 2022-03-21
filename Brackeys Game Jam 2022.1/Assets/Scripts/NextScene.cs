@@ -33,7 +33,7 @@ public class NextScene : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        bool doOnce = true;
+        //bool doOnce = true;
 
         if (GameObject.Find("Game Controller") != null)
         {
@@ -42,10 +42,10 @@ public class NextScene : MonoBehaviour
             difficultyStageT = GameController.instance.difficultyStage;
         }
 
-        if (GameObject.Find("Player") == null && doOnce)
+        if (GameObject.Find("Player") == null && SceneManager.GetActiveScene().buildIndex == 1) //&& doOnce
         {
-            doOnce = false;
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+            //doOnce = false;
+            SceneManager.LoadScene(2);
         }
 
 
@@ -56,8 +56,8 @@ public class NextScene : MonoBehaviour
 
             if (Input.GetKeyDown("r"))
             {
-                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 2);
-                Destroy(this, 0f);
+                SceneManager.LoadScene(0);
+                //Destroy(this, 0f);
             }
         }
 
